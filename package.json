@@ -1,5 +1,5 @@
 {
-  "name": "@slytech/atree",
+  "name": "atree-react",
   "description": "A simple component for rendering an animated tree view",
   "version": "0.4.7",
   "type": "module",
