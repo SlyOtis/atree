@@ -23,8 +23,8 @@
   "module": "./dist/atree.es.js",
   "types": "./dist/index.d.ts",
   "peerDependencies": {
-    "react": "16.8.0 || >=17.x",
-    "react-dom": "16.8.0 || >=17.x"
+    "react": "^18.0.25",
+    "react-dom": "^18.0.9"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",

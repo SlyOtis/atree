@@ -27,4 +27,9 @@ export default defineConfig({
       external: [...Object.keys(packageJson.peerDependencies)],
     },
   },
+  resolve: {
+    alias: {
+      "atree": resolve(__dirname, "src/component/index.ts")
+    },
+  }
 })
