@@ -10,15 +10,17 @@ import * as packageJson from './package.json'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      jsxRuntime: 'automatic'
+    }),
     tsConfigPaths(),
     dts({
       include: ['src/component/'],
-    }),
+    })
   ],
   build: {
     lib: {
-      entry: resolve('src', 'component/index.ts'),
+      entry: resolve(__dirname, 'src/component/index.ts'),
       name: 'ATree',
       formats: ['es', 'umd'],
       fileName: (format) => `atree.${format}.js`,

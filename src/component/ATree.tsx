@@ -14,12 +14,12 @@ type ATreePoint = {
 export interface ATreeProps<T> {
     root: T
     childKey: keyof T
+    children: (item: T, index: number, dept: number) => ReactNode
     inset?: number
     delay?: number
     duration?: number
     depthThreshold?: number
     depthParallels?: number
-    children: (item: T, index: number, dept: number) => ReactNode
 }
 
 export const ATree = <T, >(props: ATreeProps<T>) => {

@@ -19,7 +19,8 @@
     "declarationMap": true,
     "baseUrl": ".",
     "paths": {
-      "atree": [ "src/component/index.ts" ]
+      "atree": [ "src/component/index.ts" ],
+      "react": [ "node_modules/react"]
     },
     "typeRoots": [
       "node_modules/@types",

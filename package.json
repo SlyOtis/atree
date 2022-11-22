@@ -1,7 +1,7 @@
 {
   "name": "@slytech/atree",
   "description": "A simple component for rendering an animated tree view",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "type": "module",
   "private": false,
   "scripts": {
@@ -10,7 +10,8 @@
     "preview": "vite preview"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "exports": {
     ".": {
