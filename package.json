@@ -1,7 +1,7 @@
 {
   "name": "atree-react",
   "description": "A simple component for rendering an animated tree view",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "type": "module",
   "private": false,
   "scripts": {
