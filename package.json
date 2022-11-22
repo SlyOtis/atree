@@ -1,30 +1,66 @@
 {
   "name": "atree",
   "description": "A simple component for rendering an animated tree view",
-  "private": false,
-  "author": {
-    "email": "post@slytech.no",
-    "name": "Martin Ottersland",
-    "url": "https://github.com/SlyOtis"
-  },
-  "keywords": ["react", "tree", "view", "component", "ui", "animated", "tree-view", "atree"],
   "version": "0.4.6",
   "type": "module",
-  "main": "dist/index.js",
+  "private": false,
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/atree.es.js",
+      "require": "./dist/atree.umd.js"
+    },
+    "./dist/style.css": "./dist/atree.css"
+  },
+  "main": "./dist/atree.umd.js",
+  "module": "./dist/atree.es.js",
+  "types": "./dist/index.d.ts",
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "16.8.0 || >=17.x",
+    "react-dom": "16.8.0 || >=17.x"
   },
   "devDependencies": {
+    "@types/node": "^18.11.9",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "@vitejs/plugin-react": "^2.2.0",
     "typescript": "^4.6.4",
-    "vite": "^3.2.3"
+    "vite": "^3.2.3",
+    "vite-plugin-dts": "^1.7.1",
+    "vite-tsconfig-paths": "^3.6.0"
+  },
+  "peerDependencies": {
+    "react": "16.8.0 || >=17.x",
+    "react-dom": "16.8.0 || >=17.x"
+  },
+  "keywords": [
+    "react",
+    "tree",
+    "view",
+    "component",
+    "ui",
+    "animated",
+    "tree-view",
+    "atree"
+  ],
+  "author": {
+    "email": "post@slytech.no",
+    "name": "Martin Ottersland",
+    "url": "https://github.com/SlyOtis"
+  },
+  "repository": {
+    "url": "https://github.com/SlyOtis/atree",
+    "type": "git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SlyOtis/atree/issues"
   }
 }
