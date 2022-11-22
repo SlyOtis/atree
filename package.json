@@ -1,9 +1,16 @@
 {
   "name": "atree",
   "description": "A simple component for rendering an animated tree view",
-  "private": true,
+  "private": false,
+  "author": {
+    "email": "post@slytech.no",
+    "name": "Martin Ottersland",
+    "url": "https://github.com/SlyOtis"
+  },
+  "keywords": ["react", "tree", "view", "component", "ui", "animated", "tree-view", "atree"],
   "version": "0.4.6",
   "type": "module",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
