@@ -25,11 +25,12 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [...Object.keys(packageJson.peerDependencies)],
-    },
-  },
-  resolve: {
-    alias: {
-      "atree": resolve(__dirname, "src/component/index.ts")
+      output: {
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDom'
+        }
+      }
     },
   }
 })

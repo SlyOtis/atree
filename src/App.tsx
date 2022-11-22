@@ -1,7 +1,5 @@
 import React from 'react'
-// @ts-ignore
-import * as randomColor from 'randomcolor'
-import ATree from "./component/ATree";
+import ATree from './component/ATree'
 import './App.css'
 
 type Item = {
