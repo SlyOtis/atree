@@ -1,5 +1,5 @@
 import React from 'react'
-import {ATree} from 'atree-react'
+import ATree from './component/index'
 import './App.css'
 
 type Item = {
