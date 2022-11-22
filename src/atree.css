@@ -1,0 +1,104 @@
+.root  {
+    width: 100%;
+    height: 100%;
+}
+
+.list {
+    background: white;
+    padding-left: 16px;
+}
+
+.athree-items {
+    z-index: 1;
+}
+
+.athree-item {
+    position: relative;
+    z-index: 0;
+}
+
+.athree-item::before {
+    content: "";
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: scale(1);
+}
+
+.athree-item:not(:first-of-type) > *:first-child {
+    transition: inherit;
+    transition-duration: inherit;
+    transition-delay: inherit;
+    transform: scaleX(0) scaleY(0);
+    transform-origin: center left;
+    opacity: 0;
+}
+
+.athree-root {
+    z-index: 0;
+    position: relative;
+}
+
+.athree-arrow {
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.athree-path {
+    position: relative;
+    stroke-dashoffset: 0;
+    z-index: 0;
+    transition: none;
+    opacity: 0;
+}
+
+.athree-path-hidden {
+    transition: none;
+}
+
+.athree-visible > .athree-arrow > .athree-path {
+    stroke-dashoffset: 0 !important;
+    transition-property: all;
+    transition-timing-function: ease-out;
+    opacity: 1;
+}
+
+.athree-visible > .athree-items > .athree-item > *:first-child {
+    transform: scaleX(1) scaleY(1);
+    opacity: 1;
+}
+
+.item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.item-info {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.item > svg {
+    padding: 4px;
+}
+
+.item-info > *:first-child {
+    font-weight: bold;
+}
+
+.item-info > *:last-child {
+    padding-left: 16px;
+    font-weight: lighter;
+}
