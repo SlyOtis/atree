@@ -17,28 +17,26 @@
       "import": "./dist/atree.es.js",
       "require": "./dist/atree.umd.js"
     },
-    "./dist/style.css": "./dist/atree.css"
+    "./dist/style.css": "./dist/style.css"
   },
   "main": "./dist/atree.umd.js",
   "module": "./dist/atree.es.js",
   "types": "./dist/index.d.ts",
-  "dependencies": {
+  "peerDependencies": {
     "react": "16.8.0 || >=17.x",
     "react-dom": "16.8.0 || >=17.x"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
-    "@types/react": "^18.0.24",
-    "@types/react-dom": "^18.0.8",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
     "@vitejs/plugin-react": "^2.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "typescript": "^4.6.4",
     "vite": "^3.2.3",
     "vite-plugin-dts": "^1.7.1",
     "vite-tsconfig-paths": "^3.6.0"
-  },
-  "peerDependencies": {
-    "react": "16.8.0 || >=17.x",
-    "react-dom": "16.8.0 || >=17.x"
   },
   "keywords": [
     "react",
@@ -55,6 +53,7 @@
     "name": "Martin Ottersland",
     "url": "https://github.com/SlyOtis"
   },
+  "homepage": "https://github.com/SlyOtis/atree#readme",
   "repository": {
     "url": "https://github.com/SlyOtis/atree",
     "type": "git"
