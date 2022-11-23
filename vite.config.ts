@@ -11,7 +11,7 @@ import * as packageJson from './package.json'
 export default defineConfig({
   plugins: [
     react({
-      jsxRuntime: 'classic'
+      jsxRuntime: 'automatic'
     }),
     tsConfigPaths(),
     dts({
@@ -35,13 +35,5 @@ export default defineConfig({
         }
       }
     },
-  },
-  optimizeDeps: {
-    include: ["react/jsx-runtime"],
-  },
-  resolve: {
-    alias: {
-      'atree-react':  resolve(__dirname, 'src/component/index.ts')
-    }
   }
 })
