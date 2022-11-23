@@ -1,5 +1,5 @@
-import React from 'react'
-import ATree from 'atree-react'
+import React, {useState} from 'react'
+import ATree from './component'
 import './App.css'
 
 type Item = {
@@ -27,13 +27,20 @@ function App() {
         })
     }
 
+    const [visible, setVisible] = useState(false)
+
     return (
         <div className="root">
-            <h1>Hello</h1>
+            <div className="header">
+                <h1>Hello</h1>
+                <button onClick={() => setVisible(!visible)}>{visible ? 'Hide' : 'Show'}</button>
+            </div>
+
             <div className="list">
                 <ATree<Item>
                     root={data}
                     childKey="children"
+                    visible={visible}
                 >
                     {(item, index, dept) => (
                         <div className="item">

@@ -12,19 +12,54 @@ type ATreePoint = {
 }
 
 export interface ATreeProps<T> {
+    /**
+     * The initial root element
+     */
     root: T
+    /**
+     * The key to use on the root element from where to pick children
+     */
     childKey: keyof T
+    /**
+     * Callback for when an item needs to be rendered
+     * @param item The current item to render
+     * @param index The index of the item at the current depth
+     * @param dept The depth in the three for the given item
+     * @param position The absolute position in the tree, real index
+     */
     children: (item: T, index: number, dept: number, position: number) => ReactNode
+    /**
+     * The inset in pixels.
+     * TODO:: This can easily be something else if that is desirable
+     */
     inset?: number
+    /**
+     * The delay to use between animations.
+     */
     delay?: number
+    /**
+     * The duration of the individual animations.
+     */
     duration?: number
+    /**
+     * The threshold for when to switch from delay to duration for path drawing
+     * this gives the effect of the line to the next branch being drawn while the
+     * branch itself is drawn.
+     */
     depthThreshold?: number
+    /**
+     * All depths below this threshold will run in paralell.
+     */
     depthParallels?: number
+    /**
+     * Hide show the tree
+     */
+    visible?: boolean
 }
 
 export const ATree = <T, >(props: ATreeProps<T>) => {
 
-    const {root, children: renderItem, childKey} = props
+    const {root, children: renderItem, childKey, visible} = props
     const rootEl = useRef<HTMLDivElement>(null)
 
     const inset = props.inset || 40
@@ -34,9 +69,7 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
     const duration = props.duration || 250
     let _position = 0
     let _maxDepth = 0
-    let timeout: any = undefined
 
-    // @ts-ignore
     const positionItems = (item: any, isRoot: boolean, index: number = 0, depth: number = 0): ATreePositionResult => {
         const children: Array<T> = childKey in item ? item[childKey] : []
         _position++
@@ -107,7 +140,10 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
         }
     }
 
+    //TODO:: UseMemo for the initial calculation, separate into own component
     const {items, paths} = positionItems(root, true)
+
+    //TODO:: Add a ref for real position
 
     useEffect(() => {
         const root = rootEl.current
@@ -174,13 +210,16 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
                     }
                 }
             })
-
-            clearTimeout(timeout)
-            setTimeout(() => {
-                root.classList.add('athree-visible')
-            }, 1000)
         }
-    }, [rootEl])
+    }, [rootEl.current])
+
+    useEffect(() => {
+        const root = rootEl.current
+        if (root) {
+            root.classList[visible? 'add' : 'remove']('athree-visible')
+        }
+    }, [rootEl.current, visible])
+
 
     return (
         <div className="athree-root" ref={rootEl}>

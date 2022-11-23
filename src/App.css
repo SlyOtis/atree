@@ -36,3 +36,24 @@
     padding-left: 16px;
     font-weight: lighter;
 }
+
+.header {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    padding: 16px
+}
+
+button {
+    position: relative;
+    width: 100px;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: #0fecd3;
+    border-radius: 20px;
+    margin-left: 100px;
+    cursor: pointer;
+}
