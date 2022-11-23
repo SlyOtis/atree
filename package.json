@@ -1,7 +1,7 @@
 {
   "name": "atree-react",
   "description": "A simple component for rendering an animated tree view",
-  "version": "0.4.11",
+  "version": "0.4.13",
   "type": "module",
   "private": false,
   "scripts": {
@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "eslint --fix 'src/**/*.{jsx,ts,tsx}'",
-    "format": "prettier --write src//**/*.{ts,tsx,css} --config ./.prettierrc"
+    "format": "prettier --write src//**/*.{ts,tsx,css} --config ./.prettierrc",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist",
@@ -21,15 +22,13 @@
       "import": "./dist/atree.es.js",
       "require": "./dist/atree.umd.js"
     },
-    "./dist/style.css": "./dist/style.css"
+    "./dist/style.css": "./dist/style.css",
+    "./react": "./node_modules/react",
+    "./react-dom/client": "./node_modules/react-dom/client"
   },
   "main": "./dist/atree.umd.js",
   "module": "./dist/atree.es.js",
   "types": "./dist/index.d.ts",
-  "dependencies": {
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
-  },
   "peerDependencies": {
     "react": "^18.1.0",
     "react-dom": "^18.1.0"

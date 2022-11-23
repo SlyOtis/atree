@@ -18,9 +18,9 @@
     "esModuleInterop": true ,
     "declarationMap": true,
     "baseUrl": ".",
+    "preserveSymlinks": true,
     "paths": {
-      "atree-react": [ "src/component/index.ts" ],
-      "atree": [ "src/component/index.ts" ]
+      "atree-react": [ "src/component/index.ts" ]
     },
     "typeRoots": [
       "node_modules/@types",

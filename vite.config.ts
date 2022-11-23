@@ -36,10 +36,12 @@ export default defineConfig({
       }
     },
   },
+  optimizeDeps: {
+    include: ["react/jsx-runtime"],
+  },
   resolve: {
     alias: {
-      'atree-react':  resolve(__dirname, 'src/component/index.ts'),
-      'atree': resolve(__dirname, 'src/component/index.ts')
+      'atree-react':  resolve(__dirname, 'src/component/index.ts')
     }
   }
 })
