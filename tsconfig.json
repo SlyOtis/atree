@@ -20,7 +20,7 @@
     "baseUrl": ".",
     "paths": {
       "atree-react": [ "src/component/index.ts" ],
-      "react": [ "node_modules/react"]
+      "atree": [ "src/component/index.ts" ]
     },
     "typeRoots": [
       "node_modules/@types",

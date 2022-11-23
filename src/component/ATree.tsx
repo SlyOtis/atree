@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useRef} from "react";
+import React, {ReactNode, useEffect, useRef} from 'react';
 import './atree.css'
 
 interface ATreePositionResult {
@@ -14,7 +14,7 @@ type ATreePoint = {
 export interface ATreeProps<T> {
     root: T
     childKey: keyof T
-    children: (item: T, index: number, dept: number) => ReactNode
+    children: (item: T, index: number, dept: number, position: number) => ReactNode
     inset?: number
     delay?: number
     duration?: number
@@ -84,7 +84,7 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
                             transitionDuration: `${duration}ms`
                         }}
                     >
-                        {renderItem(item, index, depth)}
+                        {renderItem(item, index, depth, pos)}
                     </div>
                     {_items}
                 </>

@@ -11,11 +11,12 @@ import * as packageJson from './package.json'
 export default defineConfig({
   plugins: [
     react({
-      jsxRuntime: 'automatic'
+      jsxRuntime: 'classic'
     }),
     tsConfigPaths(),
     dts({
       include: ['src/component/'],
+      insertTypesEntry: true,
     })
   ],
   build: {
@@ -30,9 +31,15 @@ export default defineConfig({
       output: {
         globals: {
           react: 'React',
-          'react-dom': 'ReactDom'
+          'react-dom': 'ReactDOM'
         }
       }
     },
+  },
+  resolve: {
+    alias: {
+      'atree-react':  resolve(__dirname, 'src/component/index.ts'),
+      'atree': resolve(__dirname, 'src/component/index.ts')
+    }
   }
 })
