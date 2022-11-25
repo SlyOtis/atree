@@ -61,16 +61,19 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
 
     const {root, children: renderItem, childKey, visible} = props
     const rootEl = useRef<HTMLDivElement>(null)
-    const maxTrans = useRef(0)
     const transTimeout = useRef(0)
+    const maxTrans = useRef(0)
 
     const inset = props.inset || '40px'
     const delay = props.delay || 100
     const depthThreshold = props.depthThreshold || 1
     const depthParallels = props.depthParallels || 0
     const duration = props.duration || 250
-    let _position = 0
+
     let _maxDepth = 0
+    let _position = 0
+
+
 
     const positionItems = (item: any, isRoot: boolean, index: number = 0, depth: number = 0): ATreePositionResult => {
         const children: Array<T> = childKey in item ? item[childKey] : []
@@ -165,11 +168,11 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
         const {top: rTop, left: rLeft} = root.getBoundingClientRect()
         const points: Array<ATreePoint> = []
 
-        rootEl.current.querySelectorAll('.athree-item').forEach((el, i) => {
+        root.querySelectorAll('.athree-item').forEach((el) => {
             const {height, left: elLeft, top: elTop} = el.getBoundingClientRect()
             const index = parseInt((el as HTMLDivElement).dataset['index'] || '0')
             const depth = parseInt((el as HTMLDivElement).dataset['depth'] || '0')
-            const position = parseInt((el as HTMLDivElement).dataset['position'] || '0')
+            const pos = parseInt((el as HTMLDivElement).dataset['position'] || '0')
             const count = parseInt((el as HTMLDivElement).dataset['count'] || '0')
             const left = Math.round(elLeft - rLeft)
             const top = Math.round(elTop - rTop)
@@ -202,43 +205,30 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
                     points[depth - 1] = turn
                 }
 
-                const path = root.querySelector<SVGPathElement>(`.athree-arrow > #athree-path-${position}`)
+                const path = root.querySelector<SVGPathElement>(`.athree-arrow > #athree-path-${pos}`)
                 if (path) {
                     path.setAttribute('d', `M${start.x},${start.y} L${turn.x},${turn.y} L${end.x},${end.y}`)
                     const len = path.getTotalLength()
 
                     if (depth <= depthParallels) {
-                        path.style.setProperty('--delay', `${tdl}ms`)
-                        path.style.setProperty('--duration', `${tdur}ms`)
-                        path.style.setProperty('--dur-up', `${tdur}ms`)
-
-                        // return {
-                        //     delay: 0,
-                        //     duration: index * (duration * depth)
-                        // }
+                        path.style.setProperty('--delay', '0ms')
+                        path.style.transitionDelay = '0ms !important'
+                        path.style.transitionDuration = `${index * (duration * depth)}ms`
                     } else if (depth <= depthThreshold) {
-                        // return {
-                        //     delay: 0,
-                        //     duration: position * delay
-                        // }
+                        path.style.setProperty('--duration', `calc(${pos} * ${delay}ms)`)
+                        path.style.setProperty('--delay', `calc((${pos} * ${delay}ms) * var(--direction))`)
+                        path.style.transitionDelay = 'calc((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2))))'
+                        path.style.transitionDuration = `calc((var(--duration) * (1 - var(--direction)) + (min(var(--duration), var(--max-trans)) * var(--direction)))`
                     } else {
-                        // return {
-                        //     delay: position * delay,
-                        //     duration
-                        // }
+                        path.style.setProperty('--delay', `calc(${pos} * ${delay}ms)`)
+                        path.style.transitionDelay = 'calc((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2))))'
+                        path.style.transitionDuration = `${duration}ms`
                     }
 
-                    // path.style.transitionDelay = `${tdl}ms`
-                    // path.style.transitionDuration = `${tdur}ms`
-                    // path.style.strokeDasharray = `${len}`
-                    // path.style.strokeDashoffset = `${len}`
-
-                    // path.style.setProperty('--delay', `${tdl}ms`)
-                    // path.style.setProperty('--duration', `${tdur}ms`)
                     path.style.setProperty('--size', `${len}`)
                     path.style.setProperty('--offset', `${len}`)
                 } else {
-                    console.error(`Failed to updated path data for #athree-path-${position}`)
+                    console.error(`Failed to updated path data for #athree-path-${pos}`)
                 }
             }
         })
@@ -251,6 +241,7 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
             return
         }
 
+        //TODO:: Fix initial set
         if (visible) {
             transTimeout.current = Date.now()
             root.style.setProperty('--max-trans', `${maxTrans.current}ms`)
@@ -270,7 +261,7 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
             className="athree-root"
             style={{
                 '--count': `${_position}`,
-                '--depth': `${_maxDepth}`,
+                '--max-depth': `${_maxDepth}`,
                 '--max-trans': `${maxTrans.current}ms`
             } as any}
         >
