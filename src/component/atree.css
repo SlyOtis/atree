@@ -20,7 +20,7 @@
 
 /* 1-(-1) */
 .atree-item:not(:first-of-type) {
-    transition-delay: calc((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2))));
+    transition-delay: calc(((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2)))));
     transition-duration: var(--duration);
 }
 
@@ -40,6 +40,7 @@
     --delay: 0;
     --size: 0;
     --offset: 0;
+    --start-offset: 0;
     overflow: hidden;
     will-change: max-height;
     transition-property: max-height;
@@ -66,7 +67,7 @@
     z-index: 0;
     transition: none;
     opacity: 0;
-    transition-delay: calc((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2))));
+    transition-delay: max(calc((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2))) - var(--start-offset)), 0ms);
     transition-duration: var(--duration);
     stroke-dasharray: var(--size);
     stroke-dashoffset: var(--offset);

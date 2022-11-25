@@ -126,7 +126,7 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
                         data-count={_childCount}
                         style={{
                             marginLeft: `calc(${(isRoot ? 0 : depth)} * ${inset})`,
-                            '--delay': `${transDelay}ms`,
+                            '--delay': `max(calc(${transDelay}ms - var(--start-offset)), 0ms)`,
                             '--duration': `${duration}ms`
                         } as any}
                     >
@@ -223,15 +223,15 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
                     if (depth <= depthParallels) {
                         path.style.setProperty('--delay', '0ms')
                         path.style.transitionDelay = '0ms !important'
-                        path.style.transitionDuration = `${index * (duration * depth)}ms`
+                        path.style.transitionDuration = `calc(${index * (duration * depth)}ms - var(--start-offset))`
                     } else if (depth <= depthThreshold) {
-                        path.style.setProperty('--duration', `calc(${pos} * ${delay}ms)`)
-                        path.style.setProperty('--delay', `calc((${pos} * ${delay}ms) * var(--direction))`)
+                        path.style.setProperty('--duration', `calc((${pos} * ${delay}ms) - var(--start-offset))`)
+                        path.style.setProperty('--delay', `calc(((${pos} * ${delay}ms) * var(--direction)) - var(--start-offset))`)
                         path.style.transitionDelay = 'calc((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2))))'
                         path.style.transitionDuration = `calc((var(--duration) * (1 - var(--direction)) + (min(var(--duration), var(--max-trans)) * var(--direction)))`
                     } else {
-                        path.style.setProperty('--delay', `calc(${pos} * ${delay}ms)`)
-                        path.style.transitionDelay = 'calc((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2))))'
+                        path.style.setProperty('--delay', `calc((${pos} * ${delay}ms) - var(--start-offset))`)
+                        path.style.transitionDelay = 'calc((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2))) - var(--start-offset))'
                         path.style.transitionDuration = `${duration}ms`
                     }
 
@@ -253,16 +253,23 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
 
         //TODO:: Fix initial set
         if (visible) {
+            if (transTimeout.current > 0) {
+                const start = Date.now() - transTimeout.current
+                root.style.setProperty('--start-offset', `${start <= maxTrans.current ? start : 0}ms`)
+            }
             transTimeout.current = Date.now()
             root.style.setProperty('--max-trans', `${maxTrans.current}ms`)
-            root.style.transitionDuration = `calc(var(--max-trans) + (${delay}ms * min(1, var(--count))))`
+            root.style.transitionDuration = `calc(var(--max-trans) + (${delay}ms * min(2, var(--count))))`
             // root.style.transitionTimingFunction = 'ease-out'
             root.classList.add('atree-visible')
             root.style.maxHeight = `${maxHeight.current}px`
         } else {
-            const transSum = Date.now() - transTimeout.current
+            const start = Date.now()
+            const transSum = start - transTimeout.current
+            root.style.setProperty('--start-offset', `${transTimeout.current <= maxTrans.current ? transTimeout.current : 0}ms`)
+            transTimeout.current = start
             root.style.setProperty('--max-trans', `min(${maxTrans.current}ms, max(${transSum}ms, ${duration + delay}ms))`)
-            root.style.transitionDuration = `calc(var(--max-trans) + (${delay}ms * min(1, var(--count))))`
+            root.style.transitionDuration = `calc(var(--max-trans) + (${delay}ms * min(2, var(--count))))`
             // root.style.transitionTimingFunction = 'ease-in'
             root.classList.remove('atree-visible')
             root.style.maxHeight = `${rootHeight.current}px`
@@ -281,7 +288,8 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
                 '--duration': `${duration}ms`,
                 '--count': `${_position}`,
                 '--max-depth': `${_maxDepth}`,
-                '--max-trans': `${maxTrans.current}ms`
+                '--max-trans': `${maxTrans.current}ms`,
+                '--start-offset': '0ms'
             } as any}
         >
             <div ref={listEl} className="atree-list">
