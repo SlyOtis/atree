@@ -13,13 +13,13 @@ function App() {
     const data: Item = {
         name: '0. Root Test',
         desc: 'Root Desc',
-        children: new Array(10).fill({
+        children: new Array(4).fill({
             name: '0. Test',
             desc: 'importatnt description',
             children: new Array(4).fill({
                 name: '1. Sub Test',
                 desc: 'Some random desc',
-                children: new Array(2).fill({
+                children: new Array(3).fill({
                     name: '2. Sub sub test',
                     desc: 'What is this?'
                 })

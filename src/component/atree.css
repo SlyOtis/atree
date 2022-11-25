@@ -18,6 +18,12 @@
     transform: scale(1);
 }
 
+/* 1-(-1) */
+.athree-item:not(:first-of-type) {
+    transition-delay: calc((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2))));
+    transition-duration: var(--duration);
+}
+
 .athree-item:not(:first-of-type) > *:first-child {
     transition: inherit;
     transition-duration: inherit;
@@ -30,6 +36,12 @@
 .athree-root {
     z-index: 0;
     position: relative;
+    --direction: 1;
+    --max-trans: 0;
+    --duration: 0;
+    --delay: 0;
+    --size: 0;
+    --offset: 0;
 }
 
 .athree-arrow {
@@ -43,20 +55,23 @@
 
 .athree-path {
     position: relative;
-    stroke-dashoffset: 0;
     z-index: 0;
     transition: none;
     opacity: 0;
+    transition-delay: calc((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2))));
+    transition-duration: var(--duration);
+    stroke-dasharray: var(--size);
+    stroke-dashoffset: var(--offset);
+    transition-property: all;
+    transition-timing-function: ease-out;
 }
 
-.athree-path-hidden {
-    transition: none;
+.athree-visible {
+    --direction: 0;
 }
 
 .athree-visible > .athree-arrow > .athree-path {
     stroke-dashoffset: 0 !important;
-    transition-property: all;
-    transition-timing-function: ease-out;
     opacity: 1;
 }
 
