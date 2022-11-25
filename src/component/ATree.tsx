@@ -60,9 +60,12 @@ export interface ATreeProps<T> {
 export const ATree = <T, >(props: ATreeProps<T>) => {
 
     const {root, children: renderItem, childKey, visible} = props
+    const listEl = useRef<HTMLDivElement>(null)
     const rootEl = useRef<HTMLDivElement>(null)
     const transTimeout = useRef(0)
     const maxTrans = useRef(0)
+    const maxHeight = useRef(0)
+    const rootHeight = useRef(0)
 
     const inset = props.inset || '40px'
     const delay = props.delay || 100
@@ -73,14 +76,12 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
     let _maxDepth = 0
     let _position = 0
 
-
-
     const positionItems = (item: any, isRoot: boolean, index: number = 0, depth: number = 0): ATreePositionResult => {
         const children: Array<T> = childKey in item ? item[childKey] : []
         _position++
 
         const pos = _position - 1
-        const itemId = `athree-item-${depth}-${index}-${pos}`
+        const itemId = `atree-item-${depth}-${index}-${pos}`
         const transDelay = depth <= depthParallels ? index * (delay * depth) : delay * pos
 
         if (depth > _maxDepth) {
@@ -118,7 +119,7 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
                     <div
                         id={itemId}
                         key={itemId}
-                        className="athree-item"
+                        className="atree-item"
                         data-index={index}
                         data-depth={depth}
                         data-position={pos}
@@ -138,9 +139,9 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
                 <>
                     {!isRoot && (
                         <path
-                            key={`athree-path-${pos}`}
-                            id={`athree-path-${pos}`}
-                            className="athree-path"
+                            key={`atree-path-${pos}`}
+                            id={`atree-path-${pos}`}
+                            className="atree-path"
                             fill="transparent"
                             stroke="#000000"
                             strokeWidth="3"
@@ -159,24 +160,33 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
 
 
     useEffect(() => {
+        const list = listEl.current
         const root = rootEl.current
 
-        if (!root) {
-           return
+        if (!list || !root) {
+            return
         }
 
-        const {top: rTop, left: rLeft} = root.getBoundingClientRect()
+        const {top: rTop, left: rLeft} = list.getBoundingClientRect()
         const points: Array<ATreePoint> = []
 
-        root.querySelectorAll('.athree-item').forEach((el) => {
+        maxHeight.current = 0
+
+        list.querySelectorAll('.atree-item').forEach((el) => {
             const {height, left: elLeft, top: elTop} = el.getBoundingClientRect()
             const index = parseInt((el as HTMLDivElement).dataset['index'] || '0')
             const depth = parseInt((el as HTMLDivElement).dataset['depth'] || '0')
             const pos = parseInt((el as HTMLDivElement).dataset['position'] || '0')
-            const count = parseInt((el as HTMLDivElement).dataset['count'] || '0')
             const left = Math.round(elLeft - rLeft)
             const top = Math.round(elTop - rTop)
             const center = Math.round(height / 2)
+
+            maxHeight.current += height
+
+            if (pos === 0) {
+                rootHeight.current = height
+                root.style.maxHeight = `${rootHeight.current}px`
+            }
 
             const start: ATreePoint = points[depth - 1] || {
                 x: left + center,
@@ -205,7 +215,7 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
                     points[depth - 1] = turn
                 }
 
-                const path = root.querySelector<SVGPathElement>(`.athree-arrow > #athree-path-${pos}`)
+                const path = list.querySelector<SVGPathElement>(`.atree-arrow > #atree-path-${pos}`)
                 if (path) {
                     path.setAttribute('d', `M${start.x},${start.y} L${turn.x},${turn.y} L${end.x},${end.y}`)
                     const len = path.getTotalLength()
@@ -228,11 +238,11 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
                     path.style.setProperty('--size', `${len}`)
                     path.style.setProperty('--offset', `${len}`)
                 } else {
-                    console.error(`Failed to updated path data for #athree-path-${pos}`)
+                    console.error(`Failed to updated path data for #atree-path-${pos}`)
                 }
             }
         })
-    }, [rootEl.current])
+    }, [listEl.current])
 
     useEffect(() => {
         const root = rootEl.current
@@ -245,12 +255,18 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
         if (visible) {
             transTimeout.current = Date.now()
             root.style.setProperty('--max-trans', `${maxTrans.current}ms`)
+            root.style.transitionDuration = `calc(var(--max-trans) + (${delay}ms * min(1, var(--count))))`
+            // root.style.transitionTimingFunction = 'ease-out'
+            root.classList.add('atree-visible')
+            root.style.maxHeight = `${maxHeight.current}px`
         } else {
             const transSum = Date.now() - transTimeout.current
-            root.style.setProperty('--max-trans', `min(${maxTrans.current}ms, ${transSum}ms)`)
+            root.style.setProperty('--max-trans', `min(${maxTrans.current}ms, max(${transSum}ms, ${duration + delay}ms))`)
+            root.style.transitionDuration = `calc(var(--max-trans) + (${delay}ms * min(1, var(--count))))`
+            // root.style.transitionTimingFunction = 'ease-in'
+            root.classList.remove('atree-visible')
+            root.style.maxHeight = `${rootHeight.current}px`
         }
-
-        root.classList[visible ? 'add' : 'remove']('athree-visible')
 
     }, [rootEl.current, visible])
 
@@ -258,19 +274,24 @@ export const ATree = <T, >(props: ATreeProps<T>) => {
     return (
         <div
             ref={rootEl}
-            className="athree-root"
+            className="atree-root"
             style={{
+                maxHeight: '100px',
+                '--delay': `${delay}ms`,
+                '--duration': `${duration}ms`,
                 '--count': `${_position}`,
                 '--max-depth': `${_maxDepth}`,
                 '--max-trans': `${maxTrans.current}ms`
             } as any}
         >
-            <div className="athree-items">
-                {items}
+            <div ref={listEl} className="atree-list">
+                <div className="atree-items">
+                    {items}
+                </div>
+                <svg className="atree-arrow" shapeRendering="crispEdges" width="100%" height="100%">
+                    {paths}
+                </svg>
             </div>
-            <svg className="athree-arrow" shapeRendering="crispEdges" width="100%" height="100%">
-                {paths}
-            </svg>
         </div>
     )
 }

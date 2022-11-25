@@ -4,8 +4,10 @@
 }
 
 .list {
+    position: relative;
     background: white;
     padding-left: 16px;
+    top: 70px;
 }
 
 
@@ -38,12 +40,15 @@
 }
 
 .header {
-    position: relative;
+    position: fixed;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
-    padding: 16px
+    padding: 16px;
+    z-index: 2;
+    background: white;
+    width: 100%;
 }
 
 button {

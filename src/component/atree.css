@@ -1,13 +1,13 @@
-.athree-items {
+.atree-items {
     z-index: 1;
 }
 
-.athree-item {
+.atree-item {
     position: relative;
     z-index: 0;
 }
 
-.athree-item::before {
+.atree-item::before {
     content: "";
     z-index: 0;
     position: absolute;
@@ -19,12 +19,12 @@
 }
 
 /* 1-(-1) */
-.athree-item:not(:first-of-type) {
+.atree-item:not(:first-of-type) {
     transition-delay: calc((var(--direction) * var(--max-trans)) + (var(--delay) * (1 - (var(--direction) * 2))));
     transition-duration: var(--duration);
 }
 
-.athree-item:not(:first-of-type) > *:first-child {
+.atree-item:not(:first-of-type) > *:first-child {
     transition: inherit;
     transition-duration: inherit;
     transition-delay: inherit;
@@ -33,18 +33,26 @@
     opacity: 0;
 }
 
-.athree-root {
-    z-index: 0;
-    position: relative;
+.atree-root {
     --direction: 1;
     --max-trans: 0;
     --duration: 0;
     --delay: 0;
     --size: 0;
     --offset: 0;
+    overflow: hidden;
+    will-change: max-height;
+    transition-property: max-height;
+    transition-timing-function: linear;
+    transition-delay: 0ms;
 }
 
-.athree-arrow {
+.atree-list {
+    z-index: 0;
+    position: relative;
+}
+
+.atree-arrow {
     position: absolute;
     z-index: -1;
     left: 0;
@@ -53,7 +61,7 @@
     top: 0;
 }
 
-.athree-path {
+.atree-path {
     position: relative;
     z-index: 0;
     transition: none;
@@ -66,16 +74,16 @@
     transition-timing-function: ease-out;
 }
 
-.athree-visible {
+.atree-visible {
     --direction: 0;
 }
 
-.athree-visible > .athree-arrow > .athree-path {
+.atree-visible > .atree-list > .atree-arrow > .atree-path {
     stroke-dashoffset: 0 !important;
     opacity: 1;
 }
 
-.athree-visible > .athree-items > .athree-item > *:first-child {
+.atree-visible > .atree-list > .atree-items > .atree-item > *:first-child {
     transform: scaleX(1) scaleY(1);
     opacity: 1;
 }

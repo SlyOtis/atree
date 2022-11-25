@@ -32,7 +32,7 @@ function App() {
     return (
         <div className="root">
             <div className="header">
-                <h1>Hello</h1>
+                <span>Test</span>
                 <button onClick={() => setVisible(!visible)}>{visible ? 'Hide' : 'Show'}</button>
             </div>
 
